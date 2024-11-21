@@ -1,0 +1,57 @@
+[
+  {
+    "id": "8467ec46-c20d-473d-a0cf-0eda2bef410a",
+    "title": "Product 1",
+    "description": "Lalalala",
+    "price": 500,
+    "thumbnail": [],
+    "code": "ABC123",
+    "stock": 50,
+    "category": "Lalala",
+    "status": true
+  },
+  {
+    "id": "146b51b7-fe27-41d2-82e6-71f373d0a587",
+    "title": "Product 2",
+    "description": "Lalalala",
+    "price": 500,
+    "thumbnail": [],
+    "code": "ABC124",
+    "stock": 50,
+    "category": "Lalala",
+    "status": true
+  },
+  {
+    "id": "11ff201a-1328-4c5e-81bf-49911f766a9f",
+    "title": "Product 4",
+    "description": "Lalalala",
+    "price": 500,
+    "thumbnail": [],
+    "code": "ABC127",
+    "stock": 50,
+    "status": true,
+    "category": "Lalala"
+  },
+  {
+    "id": "b84cb865-6b3c-45b3-8f7e-d99d6a19c713",
+    "title": "Product 5",
+    "description": "Lalalala",
+    "price": 500,
+    "thumbnail": [],
+    "code": "ABC129",
+    "stock": 50,
+    "status": true,
+    "category": "Lalala"
+  },
+  {
+    "id": "b27eba7e-2be2-40e0-8900-8c5b24042aa8",
+    "title": "Product 6",
+    "description": "Lalalala",
+    "price": 500,
+    "thumbnail": [],
+    "code": "ABC1230",
+    "stock": 50,
+    "status": true,
+    "category": "Lalala"
+  }
+]
