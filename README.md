@@ -1,6 +1,6 @@
 # Backend E-commerce API
 
-Este proyecto es una API para el backend de un e-commerce. Permite gestionar productos y carritos de compras mediante operaciones como listar, agregar, modificar y eliminar productos, así como crear carritos y agregar productos a ellos según su ID.
+Este proyecto es una API para el backend de un e-commerce en el puerto 8080. Permite gestionar productos y carritos de compras mediante operaciones como listar, agregar, modificar y eliminar productos, así como crear carritos y agregar productos a ellos según su ID.
 
 ## 🚀 Características
 

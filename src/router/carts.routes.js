@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { CartsManager } from "../managers/data/cartManager.js";
+import { CartsManager } from "../managers/cartManager.js"
 
 const router = Router();
 const cartManager = new CartsManager();
