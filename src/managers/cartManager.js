@@ -1,6 +1,6 @@
 import fs from "fs";
 import { v4 as uudi } from "uuid"
-import { ProductManager } from "../productManager.js";
+import { ProductManager } from "./productManager.js";
 
 const productManager = new ProductManager();
 
