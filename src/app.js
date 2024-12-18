@@ -3,7 +3,9 @@ import express, { urlencoded } from "express";
 //import routes
 import productsRoutes from "./router/products.routes.js";
 import cartsRoutes from "./router/carts.routes.js";
+import { connectMongoDB } from "./config/mongoDb.config.js";
 
+connectMongoDB();
 const PORT = 8080;
 const app = express();
 
