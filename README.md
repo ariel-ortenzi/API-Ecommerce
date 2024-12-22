@@ -1,6 +1,6 @@
 # Backend E-commerce API
 
-Este proyecto es una API para el backend de un e-commerce en el puerto 8080. Permite gestionar productos y carritos de compras mediante operaciones como listar, agregar, modificar y eliminar productos, así como crear carritos y agregar productos a ellos según su ID.
+Este proyecto es una API para el backend de un e-commerce en el puerto 8080. Permite gestionar productos y carritos de compras mediante operaciones como listar, agregar, modificar y eliminar productos, así como crear carritos y gestionar los mismos según ID.
 
 ## 🚀 Características
 
@@ -14,6 +14,16 @@ Este proyecto es una API para el backend de un e-commerce en el puerto 8080. Per
 - Crear nuevos carritos con un ID único.
 - Agregar productos a un carrito específico.
 - Consultar el contenido de un carrito.
+- Borrar un producto del carrito.
+- Vaciar carrito.
+
+## Teconologías aplicadas
+- JavaScript.
+- Node.js.
+- Express.
+- Mongoose.
+- Mongoose paginate.
+- Mongoose atlas.
 
 ---
 
