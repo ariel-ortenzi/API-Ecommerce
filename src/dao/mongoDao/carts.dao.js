@@ -21,25 +21,24 @@ class CartDao {
         return await cartModel.findByIdAndDelete(id);
     }
 
-    async deleteProductInCart(cid, pid) {
-        const cart = await cartModel.findById(cid);
+    async deleteProductInCart(cid, pid){
+        const cart = await cartModel.findById(cid)
+        const prodFilter = cart.products.filter(product => product.product != pid)
     
-        if (!cart) {
-            throw new Error("Cart not found");
-        }
+        return await cartModel.findByIdAndUpdate(cid, { products: prodFilter }, { new: true });
+    }
     
-        const productIndex = cart.products.findIndex((product) => product.product._id.toString() === pid);
+    async updateProductInCart(cid, pid, quantity){
+        const cart = await cartModel.findById(cid)
+        const product = cart.products.find(product => product.product === pid)
+        product.quantity = quantity
     
-        if (productIndex === -1) {
-            throw new Error("Product not found in cart");
-        }
+        return await cartModel.findByIdAndUpdate(cid, { products: cart.products }, { new: true });
+    }
     
-        cart.products.splice(productIndex, 1);
-    
-        const updatedCart = await cartModel.findByIdAndUpdate(cid, { products: cart.products }, { new: true });
-    
-        return updatedCart;
-    }    
+    async deleteProductsInCart(cid){
+        return await cartModel.findByIdAndUpdate(cid, { products: [] }, { new: true });
+    }
     
 }
 
