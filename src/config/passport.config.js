@@ -1,7 +1,7 @@
 import passport from "passport";
 import { Strategy as LocalStrategy } from "passport-local";
 import { ExtractJwt, Strategy as JWTStrategy } from "passport-jwt";
-import { userModel } from "../dao/models/user.model.js";
+import { userModel } from "../models/user.model.js";
 import { createHash, verifyPassword } from "../utils/hash.js";
 import { JWT_SECRET } from "../utils/jwt.js";
 

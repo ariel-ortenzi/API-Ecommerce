@@ -4,19 +4,22 @@ import cookieParser from "cookie-parser";
 import morgan from "morgan";
 import MongoStore from "connect-mongo";
 import session from "express-session"
+// import dotenv from "dotenv";
 
 
 //import routes
 import productsRoutes from "./router/products.routes.js";
 import cartsRoutes from "./router/carts.routes.js";
-import { connectMongoDB, mongoUrl } from "./config/mongoDb.config.js";
+import { connectMongoDB } from "./config/mongoDb.config.js";
 import { authRouter } from "./router/auth.routes.js";
 import { initializePassport } from "./config/passport.config.js";
-import { JWT_SECRET } from "./utils/jwt.js";
+import { CONFIG } from "../src/config/config.js"
+import { orderRoutes } from "./router/order.routes.js";
 
 connectMongoDB();
-const PORT = 8080;
+const PORT = CONFIG.PORT;
 const app = express();
+const mongoUrl = CONFIG.MONGO_URI
 
 //middlewares
 app.use(morgan("dev"));
@@ -27,7 +30,7 @@ app.use(urlencoded( {extended:true} ));
 
 app.use(
     session({
-        secret: JWT_SECRET,
+        secret: CONFIG.JWT_SECRET,
         store: MongoStore.create({
             mongoUrl,
             ttl: 15,
@@ -45,6 +48,7 @@ app.use(passport.initialize());
 app.use("/api/products", productsRoutes);
 app.use("/api/carts", cartsRoutes);
 app.use("/api/auth", authRouter);
+app.use("/api/orders", orderRoutes);
 
 
 app.listen(PORT, () => {

@@ -1,16 +1,19 @@
 import mongoose from "mongoose";
 import dotenv from "dotenv";
 
+import { CONFIG } from "./config.js"
+
 dotenv.config();
-export const mongoUrl = process.env.MONGO_URL;
+
+export const mongoUri = CONFIG.MONGO_URI;
 
 export const connectMongoDB = async () => {
     try {
-        if (!mongoUrl) {
+        if (!mongoUri) {
             throw new Error("La variable MONGO_URL no está definida en el archivo .env");
         }
 
-        await mongoose.connect(mongoUrl);
+        await mongoose.connect(CONFIG.MONGO_URI);
 
         console.log("MongoDB Connected");
     } catch (error) {
@@ -18,3 +21,4 @@ export const connectMongoDB = async () => {
         process.exit(1);
     }
 };
+

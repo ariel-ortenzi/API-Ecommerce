@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { cartModel } from "../dao/models/cart.model.js";
+import { cartModel } from "../models/cart.model.js";
 import { productDao } from "../dao/mongoDao/products.dao.js";
 import { cartDao } from "../dao/mongoDao/carts.dao.js";
 
