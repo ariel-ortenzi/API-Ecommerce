@@ -4,7 +4,8 @@ import { ExtractJwt, Strategy as JWTStrategy } from "passport-jwt";
 import { userModel } from "../models/user.model.js";
 import { createHash, verifyPassword } from "../utils/hash.js";
 import { JWT_SECRET } from "../utils/jwt.js";
-
+import { EMAIL_TYPES } from "../common/constants/email-types.js"
+import { mailService } from "../dao/mongoDao/mail.service.js"
 
 export function initializePassport() {
     passport.use(
@@ -29,7 +30,14 @@ export function initializePassport() {
                         first_name,
                         last_name,
                         age,
+                    });
+
+                    await mailService.sendMail({
+                        to: user.email,
+                        subject: "Bienvenidos a ORPACK",
+                        type: EMAIL_TYPES.WELCOME,
                     })
+
                     return done(null, user);
                 } catch (error) {
                     return done(error)
