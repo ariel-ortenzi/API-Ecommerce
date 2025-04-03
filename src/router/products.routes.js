@@ -1,5 +1,4 @@
 import { Router } from "express";
-import { productDao } from "../dao/mongoDao/products.dao.js";
 import { productsController } from "../controllers/products.controller.js";
 import { validateDto } from "../middlewares/vadilate-dto.middleware.js"
 import { productsDto } from "../dtos/products-dto.js";
