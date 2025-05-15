@@ -5,7 +5,7 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "start": "nodemon src/server/js",
+    "start": "node src/server.js",
     "test": "mocha src/test/cart.test.js",
     "dev": "nodemon src/server.js"
   },

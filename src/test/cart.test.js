@@ -18,8 +18,7 @@ describe("Test completo de Cart API", () => {
         if (res.body.payload.docs.length === 0) {
             throw new Error("No hay productos para testear");
         }
-        productId = '6761ea5d38cb02a50c70edc6'
-        // res.body.payload.docs[0]._id;
+        productId = res.body.payload.docs[0]._id;
     });
 
     it("POST /api/carts/ - crear carrito vacío", async () => {
@@ -99,15 +98,6 @@ describe("Test completo de Cart API", () => {
         expect(res.body.payload).to.have.property("_id", cartId);
     });
 
-    // it("DELETE /api/carts/:cid - vaciar productos del carrito", async () => {
-    //     const res = await request(server)
-    //         .delete(`/api/carts/${cartId}`)
-    //         .send();
-
-    //     expect(res.status).to.equal(200);
-    //     expect(res.body.status).to.equal("ok");
-    //     expect(res.body.payload.cart).to.be.an("array").that.is.empty;
-    // });
     it("DELETE /api/carts/:cid - eliminar carrito completo", async () => {
         const res = await request(server)
             .delete(`/api/carts/${cartId}`)
@@ -118,8 +108,8 @@ describe("Test completo de Cart API", () => {
         expect(res.body.payload).to.have.property("_id", cartId);
     });
 
-    // Tests para manejo de errores
 
+    // Tests para manejo de errores
     it("POST /api/carts/:cid/products/:pid - producto no existente", async () => {
         const fakeProductId = "64e2a1b9f100000000000000";
         const res = await request(server)
