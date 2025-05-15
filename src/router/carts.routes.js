@@ -10,7 +10,6 @@ router.post("/", async (req, res) => {
         const cart = await cartDao.create({});
         res.json({ status: "ok", payload: cart });
     } catch (error) {
-        console.log(error);
         res.status(404).send(error.message);
     }
 });
@@ -41,7 +40,6 @@ router.post("/:cid/products/:pid", async (req, res) => {
         res.json({ status: "ok", payload: updatedCart });
 
     } catch (error) {
-        console.log(error);
         res.status(404).send(error.message);
     }
 });
@@ -63,7 +61,6 @@ router.put("/:cid", async (req, res) => {
         res.json({ status: "ok", payload: updatedCart });
 
     } catch (error) {
-        console.log(error);
         res.status(500).json({ error: error.message });
     }
 });
@@ -89,7 +86,6 @@ router.put("/:cid/products/:pid", async (req, res) => {
         res.json({ status: "ok", payload: updatedCart });
 
     } catch (error) {
-        console.log(error);
         res.status(500).json({ error: error.message });
     }
 });
@@ -106,10 +102,9 @@ router.delete("/:cid", async (req, res) => {
         cart.products = [];
 
         const updatedCart = await cartDao.update(cid, cart);
-        res.json({ status: "success", payload: updatedCart });
+        res.json({ status: "ok", payload: updatedCart });
 
     } catch (error) {
-        console.log(error);
         res.status(500).json({ error: error.message });
     }
 });
@@ -121,13 +116,12 @@ router.get("/:cid", async (req, res) => {
         const cart = await cartModel.findById(cid).populate("products.product");
 
         if (!cart) {
-            return res.json({ status: "error", message: `Cart ID ${cid} not found` });
+            return res.status(500).json({ status: "error", message: `Cart ID ${cid} not found` });
         }
 
         res.json({ status: "ok", payload: cart });
 
     } catch (error) {
-        console.log(error);
         res.status(500).json({ error: error.message });
     }
 });
@@ -146,7 +140,6 @@ router.delete("/:cid/products/:pid", async (req, res) => {
         res.json({ status: "ok", payload: cartUpdated });
 
     } catch (error) {
-        console.log(error);
         res.status(500).json({ error: error.message });
     }
 })
@@ -166,7 +159,6 @@ router.put("/:cid/products/:pid", async (req, res) => {
         res.json({ status: "ok", payload: cartUpdated });
 
     } catch (error) {
-        console.log(error);
         res.status(500).json({ error: error.message });
     }
 })
@@ -182,7 +174,6 @@ router.delete("/:cid", async (req, res) => {
         res.json({ status: "ok", payload: cartUpdated });
 
     } catch (error) {
-        console.log(error);
         res.status(500).json({ error: error.message });
     }
 })

@@ -16,6 +16,8 @@ import { CONFIG } from "../src/config/config.js"
 import { orderRoutes } from "./router/order.routes.js";
 import { ticketPurchasedRoutes } from "./router/ticket.routes.js";
 import { mocksRoutes } from "./router/mocks.routes.js";
+import swaggerJSDoc from "swagger-jsdoc";
+import swaggerUiExpress from "swagger-ui-express";
 
 connectMongoDB();
 const PORT = CONFIG.PORT;
@@ -40,6 +42,21 @@ app.use(
         saveUninitialized: false,
     })
 );
+
+//swagger
+const swaggerOptions = {
+    definition: {
+        openapi: '3.0.1',
+        info: {
+            title: 'Documentación de app e-commerce ORPACK',
+            description: 'Api diseñada para e-commerce de una empresa de venta de reciclables.'
+        }
+    },
+    apis: [`./src/docs/**/*.yaml`]
+}
+
+const specs = swaggerJSDoc(swaggerOptions)
+app.use('/apidocs', swaggerUiExpress.serve, swaggerUiExpress.setup(specs))
 
 //Passport
 initializePassport();

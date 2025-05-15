@@ -8,7 +8,7 @@ mocksRoutes.get('/mockingusers/:count', async (req, res) => {
     const count = parseInt(req.params.count, 10);
 
     if (isNaN(count) || count <= 0) {
-        return res.status(400).json({ error: "El parámetro 'count' debe ser un número mayor que 0" });
+        return res.status(400).json({ error: "The 'count' parameter must be a number greater than 0" });
     }
 
     const users = await generateMockUsersWithProducts(count, 5);
@@ -21,14 +21,14 @@ mocksRoutes.post('/generatedata', async (req, res) => {
         const products = parseInt(req.body.products, 10);
 
         if (isNaN(users) || users <= 0 || isNaN(products) || products <= 0) {
-            return res.status(400).json({ error: "Los parámetros 'users' y 'products' deben ser números mayores que 0" });
+            return res.status(400).json({ error: "The 'users' and 'products' parameters must be numbers greater than 0" });
         }
 
         const userMocks = await generateMockUsersWithProducts(users, products);
         await userMocksService.create(userMocks);
 
         res.status(201).json({
-            message: 'Datos generados correctamente',
+            message: 'Sucess',
             users: userMocks.length,
             carts: userMocks.map(user => user.cart.length)
         });
@@ -42,8 +42,8 @@ mocksRoutes.get('/users', async (req, res) => {
         const users = await userMocksService.getAll();
         res.status(200).json({ status: "ok", payload: users });
     } catch (error) {
-        console.error("Error obteniendo usuarios:", error);
-        res.status(500).json({ status: "error", message: "Error en el servidor" });
+        console.error("User error:", error);
+        res.status(500).json({ status: "error", message: "Internal server error" });
     }
 });
 
@@ -52,8 +52,8 @@ mocksRoutes.get('/carts', async (req, res) => {
         const carts = await userMocksService.getAllCarts();
         res.status(200).json({ status: "ok", payload: carts });
     } catch (error) {
-        console.error("Error obteniendo carts:", error);
-        res.status(500).json({ status: "error", message: "Error en el servidor" });
+        console.error("Carts error:", error);
+        res.status(500).json({ status: "error", message: "Internal server error" });
     }
 });
 

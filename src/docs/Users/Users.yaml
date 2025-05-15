@@ -1,0 +1,432 @@
+openapi: 3.0.0
+info:
+  title: API e-commerce ORPACK
+  version: 1.0.0
+
+paths:
+  /api/mocks/users:
+    get:
+      summary: Obtiene todos los usuarios
+      tags: [Users]
+      responses:
+        "200":
+          description: Los usuarios fueron devueltos correctamente
+        "500":
+          description: Error interno del server, usualmente por query defectuosa.
+
+  /api/mocks/generatedata:
+    post:
+      summary: Genera usuarios y productos de prueba
+      description: Genera datos mock para usuarios y productos, y los guarda en base de datos.
+      tags: [Users]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - users
+                - products
+              properties:
+                users:
+                  type: integer
+                  example: 10
+                products:
+                  type: integer
+                  example: 5
+      responses:
+        "201":
+          description: Datos generados correctamente
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Sucess
+                  users:
+                    type: integer
+                    example: 10
+                  carts:
+                    type: array
+                    items:
+                      type: integer
+                    example: [5, 5, 5, 5, 5, 5, 5, 5, 5, 5]
+        "400":
+          description: Parámetros inválidos
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: The 'users' and 'products' parameters must be numbers greater than 0
+        "500":
+          description: Error interno del servidor
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Error interno inesperado
+
+  /api/carts:
+    post:
+      summary: Crear un carrito vacío
+      tags: [Carts]
+      responses:
+        "200":
+          description: Carrito creado correctamente
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Cart'
+        "404":
+          description: Error al crear el carrito
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /api/carts/{cid}:
+    get:
+      summary: Obtener un carrito por ID
+      tags: [Carts]
+      parameters:
+        - in: path
+          name: cid
+          required: true
+          schema:
+            type: string
+          example: 6654ad91a612ac1b8790d02a
+      responses:
+        "200":
+          description: Carrito encontrado
+          content:
+            application/json:
+              example:
+                status: ok
+                payload:
+                  _id: 6654ad91a612ac1b8790d02a
+                  products:
+                    - product: 664f7a27f5cdaabb30a10a1e
+                      quantity: 3
+        "500":
+          description: Error interno
+
+    put:
+      summary: Reemplazar los productos de un carrito
+      tags: [Carts]
+      parameters:
+        - in: path
+          name: cid
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                products:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/ProductInCart'
+      responses:
+        "200":
+          description: Productos reemplazados
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Cart'
+        "500":
+          description: Error interno
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+    delete:
+      summary: Vaciar el carrito
+      tags: [Carts]
+      parameters:
+        - in: path
+          name: cid
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Carrito vaciado
+        "500":
+          description: Error interno
+
+  /api/carts/{cid}/products/{pid}:
+    post:
+      summary: Agregar un producto al carrito
+      tags: [Carts]
+      parameters:
+        - in: path
+          name: cid
+          required: true
+          schema:
+            type: string
+        - in: path
+          name: pid
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Producto agregado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Cart'
+        "404":
+          description: Producto o carrito no encontrado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+    put:
+      summary: Actualizar cantidad de un producto
+      tags: [Carts]
+      parameters:
+        - in: path
+          name: cid
+          required: true
+          schema:
+            type: string
+        - in: path
+          name: pid
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NewCartProductInput'
+            example:
+              quantity: 5
+      responses:
+        "200":
+          description: Producto actualizado en el carrito
+          content:
+            application/json:
+              example:
+                status: ok
+                payload:
+                  _id: 6654ad91a612ac1b8790d02a
+                  products:
+                    - product: 664f7a27f5cdaabb30a10a1e
+                      quantity: 5
+
+    delete:
+      summary: Eliminar un producto del carrito
+      tags: [Carts]
+      parameters:
+        - in: path
+          name: cid
+          required: true
+          schema:
+            type: string
+        - in: path
+          name: pid
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Producto eliminado del carrito
+        "500":
+          description: Error interno
+
+  /api/products:
+    get:
+      summary: Obtener todos los productos
+      tags: [Products]
+      responses:
+        "200":
+          description: Lista de productos
+          content:
+            application/json:
+              example:
+                status: ok
+                payload:
+                  - _id: 664f7a27f5cdaabb30a10a1e
+                    name: Botella PET
+                    description: Plástico reciclable tipo PET
+                    price: 10.5
+                    stock: 100
+        "500":
+          description: Error interno
+
+    post:
+      summary: Crear un nuevo producto
+      tags: [Products]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProductInput'
+            example:
+              name: Cartón Corrugado
+              description: Cartón reciclado tipo A
+              price: 5.75
+              stock: 200
+      responses:
+        "201":
+          description: Producto creado correctamente
+          content:
+            application/json:
+              example:
+                status: ok
+                payload:
+                  _id: 6654cbe94f47e0ab50123456
+                  name: Cartón Corrugado
+                  description: Cartón reciclado tipo A
+                  price: 5.75
+                  stock: 200
+        "400":
+          description: Datos inválidos
+
+  /api/products/{pid}:
+    get:
+      summary: Obtener un producto por ID
+      tags: [Products]
+      parameters:
+        - in: path
+          name: pid
+          required: true
+          schema:
+            type: string
+          example: 664f7a27f5cdaabb30a10a1e
+      responses:
+        "200":
+          description: Producto encontrado
+          content:
+            application/json:
+              example:
+                status: ok
+                payload:
+                  _id: 664f7a27f5cdaabb30a10a1e
+                  name: Botella PET
+                  description: Plástico reciclable tipo PET
+                  price: 10.5
+                  stock: 100
+        "404":
+          description: Producto no encontrado
+
+    put:
+      summary: Actualizar un producto
+      tags: [Products]
+      parameters:
+        - in: path
+          name: pid
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProductInput'
+            example:
+              name: Botella PET reciclada
+              description: Plástico PET reutilizado
+              price: 9.99
+              stock: 150
+      responses:
+        "200":
+          description: Producto actualizado
+        "404":
+          description: Producto no encontrado
+
+    delete:
+      summary: Eliminar un producto
+      tags: [Products]
+      parameters:
+        - in: path
+          name: pid
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Producto eliminado
+        "404":
+          description: Producto no encontrado
+
+components:
+  schemas:
+    Cart:
+      type: object
+      properties:
+        _id:
+          type: string
+          example: 6654ad91a612ac1b8790d02a
+        products:
+          type: array
+          items:
+            $ref: '#/components/schemas/ProductInCart'
+
+    ProductInCart:
+      type: object
+      properties:
+        product:
+          type: string
+          example: 664f7a27f5cdaabb30a10a1e
+        quantity:
+          type: integer
+          example: 2
+
+    NewCartProductInput:
+      type: object
+      properties:
+        quantity:
+          type: integer
+          example: 3
+
+    ErrorResponse:
+      type: object
+      properties:
+        status:
+          type: string
+          example: error
+        message:
+          type: string
+          example: Cart id 1234 not found
+
+    ProductInput:
+      type: object
+      required:
+        - name
+        - description
+        - price
+        - stock
+      properties:
+        name:
+          type: string
+          example: Cartón Corrugado
+        description:
+          type: string
+          example: Cartón reciclado tipo A
+        price:
+          type: number
+          example: 5.75
+        stock:
+          type: integer
+          example: 200
